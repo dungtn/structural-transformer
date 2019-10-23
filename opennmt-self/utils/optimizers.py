@@ -185,7 +185,7 @@ class Optimizer(object):
             self.optimizer = optim.Adagrad(self.params, lr=self.learning_rate)
             for group in self.optimizer.param_groups:
                 for p in group['params']:
-                    self.optimizer.state[p]['sum'] = self.optimizer\
+                    self.optimizer.state[p]['sum'] = self.optimizer \
                         .state[p]['sum'].fill_(self.adagrad_accum)
         elif self.method == 'adadelta':
             self.optimizer = optim.Adadelta(self.params, lr=self.learning_rate)
@@ -223,15 +223,15 @@ class Optimizer(object):
                 self.original_lr *
                 (self.model_size ** (-0.5) *
                  min(self._step ** (-0.5),
-                     self._step * self.warmup_steps**(-1.5))))
+                     self._step * self.warmup_steps ** (-1.5))))
         # Decay based on start_decay_steps every decay_steps
         else:
             if ((self.start_decay_steps is not None) and (
-                     self._step >= self.start_decay_steps)):
+                    self._step >= self.start_decay_steps)):
                 self.start_decay = True
             if self.start_decay:
                 if ((self._step - self.start_decay_steps)
-                   % self.decay_steps == 0):
+                        % self.decay_steps == 0):
                     self.learning_rate = self.learning_rate * self.lr_decay
 
         if self.method != 'sparseadam':

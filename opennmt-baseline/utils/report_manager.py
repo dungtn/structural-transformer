@@ -1,9 +1,8 @@
 """ Report manager utility """
 from __future__ import print_function
+
 import time
 from datetime import datetime
-
-import onmt
 
 from utils.logging import logger
 from utils.statistics import Statistics

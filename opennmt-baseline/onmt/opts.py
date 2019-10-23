@@ -1,8 +1,8 @@
 """ Implementation of all available options """
 from __future__ import print_function
 
-import configargparse
-#from onmt.models.sru import CheckSRU
+
+# from onmt.models.sru import CheckSRU
 
 
 def config_opts(parser):
@@ -69,27 +69,27 @@ def model_opts(parser):
 
 
 def preprocess_opts(parser):
-  """ Pre-procesing options """
-  # Data options
-  group = parser.add_argument_group('Data')
+    """ Pre-procesing options """
+    # Data options
+    group = parser.add_argument_group('Data')
 
-  group.add('--train_src', '-train_src', required=True,
-            help="Path to the training source data")
-  group.add('--train_tgt', '-train_tgt', required=True,
-            help="Path to the training target data")
-  group.add('--valid_src', '-valid_src', required=True,
-            help="Path to the validation source data")
-  group.add('--valid_tgt', '-valid_tgt', required=True,
-            help="Path to the validation target data")
+    group.add('--train_src', '-train_src', required=True,
+              help="Path to the training source data")
+    group.add('--train_tgt', '-train_tgt', required=True,
+              help="Path to the training target data")
+    group.add('--valid_src', '-valid_src', required=True,
+              help="Path to the validation source data")
+    group.add('--valid_tgt', '-valid_tgt', required=True,
+              help="Path to the validation target data")
 
-  group.add('--src_dir', '-src_dir', default="",
-            help="Source directory for image or audio files.")
+    group.add('--src_dir', '-src_dir', default="",
+              help="Source directory for image or audio files.")
 
-  group.add('--save_data', '-save_data', required=True,
-            help="Output file for the prepared data")
+    group.add('--save_data', '-save_data', required=True,
+              help="Output file for the prepared data")
 
-  group.add('--shard_size', '-shard_size', type=int, default=1000000,
-            help="""Divide src_corpus and tgt_corpus into
+    group.add('--shard_size', '-shard_size', type=int, default=1000000,
+              help="""Divide src_corpus and tgt_corpus into
                      smaller multiple src_copus and tgt corpus files, then
                      build shards, each shard will have
                      opt.shard_size samples except last shard.
@@ -97,58 +97,59 @@ def preprocess_opts(parser):
                      shard_size>0 means segment dataset into multiple shards,
                      each shard has shard_size samples""")
 
-  # Dictionary options, for text corpus
+    # Dictionary options, for text corpus
 
-  group = parser.add_argument_group('Vocab')
-  group.add('--src_vocab', '-src_vocab', default="",
-            help="""Path to an existing source vocabulary. Format:
+    group = parser.add_argument_group('Vocab')
+    group.add('--src_vocab', '-src_vocab', default="",
+              help="""Path to an existing source vocabulary. Format:
                      one word per line.""")
-  group.add('--tgt_vocab', '-tgt_vocab', default="",
-            help="""Path to an existing target vocabulary. Format:
+    group.add('--tgt_vocab', '-tgt_vocab', default="",
+              help="""Path to an existing target vocabulary. Format:
                      one word per line.""")
-  group.add('--features_vocabs_prefix', '-features_vocabs_prefix',
-            type=str, default='',
-            help="Path prefix to existing features vocabularies")
-  group.add('--src_vocab_size', '-src_vocab_size', type=int, default=50000,
-            help="Size of the source vocabulary")
-  group.add('--tgt_vocab_size', '-tgt_vocab_size', type=int, default=50000,
-            help="Size of the target vocabulary")
+    group.add('--features_vocabs_prefix', '-features_vocabs_prefix',
+              type=str, default='',
+              help="Path prefix to existing features vocabularies")
+    group.add('--src_vocab_size', '-src_vocab_size', type=int, default=50000,
+              help="Size of the source vocabulary")
+    group.add('--tgt_vocab_size', '-tgt_vocab_size', type=int, default=50000,
+              help="Size of the target vocabulary")
 
-  group.add('--src_words_min_frequency',
-            '-src_words_min_frequency', type=int, default=0)
-  group.add('--tgt_words_min_frequency',
-            '-tgt_words_min_frequency', type=int, default=0)
-  group.add('--share_vocab', '-share_vocab', action='store_true',
-            help="Share source and target vocabulary")
+    group.add('--src_words_min_frequency',
+              '-src_words_min_frequency', type=int, default=0)
+    group.add('--tgt_words_min_frequency',
+              '-tgt_words_min_frequency', type=int, default=0)
+    group.add('--share_vocab', '-share_vocab', action='store_true',
+              help="Share source and target vocabulary")
 
-  # Truncation options, for text corpus
-  group = parser.add_argument_group('Pruning')
-  group.add('--src_seq_length', '-src_seq_length', type=int, default=50,
-            help="Maximum source sequence length")
-  group.add('--src_seq_length_trunc', '-src_seq_length_trunc',
-            type=int, default=0,
-            help="Truncate source sequence length.")
-  group.add('--tgt_seq_length', '-tgt_seq_length', type=int, default=50,
-            help="Maximum target sequence length to keep.")
-  group.add('--tgt_seq_length_trunc', '-tgt_seq_length_trunc',
-            type=int, default=0,
-            help="Truncate target sequence length.")
-  group.add('--lower', '-lower', action='store_true', help='lowercase data')
+    # Truncation options, for text corpus
+    group = parser.add_argument_group('Pruning')
+    group.add('--src_seq_length', '-src_seq_length', type=int, default=50,
+              help="Maximum source sequence length")
+    group.add('--src_seq_length_trunc', '-src_seq_length_trunc',
+              type=int, default=0,
+              help="Truncate source sequence length.")
+    group.add('--tgt_seq_length', '-tgt_seq_length', type=int, default=50,
+              help="Maximum target sequence length to keep.")
+    group.add('--tgt_seq_length_trunc', '-tgt_seq_length_trunc',
+              type=int, default=0,
+              help="Truncate target sequence length.")
+    group.add('--lower', '-lower', action='store_true', help='lowercase data')
 
-  # Data processing options
-  group = parser.add_argument_group('Random')
-  group.add('--shuffle', '-shuffle', type=int, default=0,
-            help="Shuffle data")
-  group.add('--seed', '-seed', type=int, default=3435,
-            help="Random seed")
+    # Data processing options
+    group = parser.add_argument_group('Random')
+    group.add('--shuffle', '-shuffle', type=int, default=0,
+              help="Shuffle data")
+    group.add('--seed', '-seed', type=int, default=3435,
+              help="Random seed")
 
-  group = parser.add_argument_group('Logging')
-  group.add('--report_every', '-report_every', type=int, default=100000,
-            help="Report status every this many sentences")
-  group.add('--log_file', '-log_file', type=str, default="",
-            help="Output logs to a file under this path.")
-  group.add('--log_file_level', '-log_file_level', type=str,
-            default="0")
+    group = parser.add_argument_group('Logging')
+    group.add('--report_every', '-report_every', type=int, default=100000,
+              help="Report status every this many sentences")
+    group.add('--log_file', '-log_file', type=str, default="",
+              help="Output logs to a file under this path.")
+    group.add('--log_file_level', '-log_file_level', type=str,
+              default="0")
+
 
 def train_opts(parser):
     """ Training and saving options """
@@ -330,7 +331,7 @@ def train_opts(parser):
     group.add('--exp_host', '-exp_host', type=str, default="",
               help="Send logs to this crayon server.")
     group.add('--exp', '-exp', type=str, default="",
-                       help="Name of the experiment for logging.")
+              help="Name of the experiment for logging.")
     # Use TensorboardX for visualization during training
     group.add('--tensorboard', '-tensorboard', action="store_true",
               help="""Use tensorboardX for visualization during training.
@@ -341,26 +342,27 @@ def train_opts(parser):
                        This is also the name of the run.
                        """)
 
+
 def translate_opts(parser):
     """ Translation / inference options """
     group = parser.add_argument_group('Model')
     group.add('--model', '-model', dest='models', metavar='MODEL',
               nargs='+', type=str, default=[], required=True,
               help='Path to model .pt file(s). '
-              'Multiple models can be specified, '
-              'for ensemble decoding.')
+                   'Multiple models can be specified, '
+                   'for ensemble decoding.')
 
     group = parser.add_argument_group('Data')
 
     group.add('--src', '-src', required=True,
-                       help="""Source sequence to decode (one line per
+              help="""Source sequence to decode (one line per
                        sequence)""")
     group.add('--tgt', '-tgt',
-                       help='True target sequence (optional)')
+              help='True target sequence (optional)')
     group.add('--output', '-output', default='pred.txt',
               help="""Path to output the predictions (each line will
                        be the decoded sequence""")
-    
+
     group.add('--share_vocab', '-share_vocab', action='store_true',
               help="Share source and target vocabulary")
 
@@ -404,4 +406,4 @@ def translate_opts(parser):
     group.add('--batch_size', '-batch_size', type=int, default=30,
               help='Batch size')
     group.add('--gpu', '-gpu', type=int, default=-1,
-                       help="Device to run on")
+              help="Device to run on")

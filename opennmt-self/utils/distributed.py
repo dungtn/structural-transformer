@@ -3,11 +3,11 @@
     https://github.com/pytorch/fairseq
 """
 
-
 from __future__ import print_function
 
 import math
 import pickle
+
 import torch.distributed
 
 from utils.logging import logger
@@ -19,8 +19,9 @@ def is_master(opt, device_id):
 
 def multi_init(opt, device_id):
     dist_init_method = 'tcp://{master_ip}:{master_port}'.format(master_ip=opt.master_ip, master_port=opt.master_port)
-    dist_world_size = opt.world_size    #total number of distributed processes.
-    torch.distributed.init_process_group(backend=opt.gpu_backend, init_method=dist_init_method, world_size=dist_world_size, rank=opt.gpu_ranks[device_id])
+    dist_world_size = opt.world_size  # total number of distributed processes.
+    torch.distributed.init_process_group(backend=opt.gpu_backend, init_method=dist_init_method,
+                                         world_size=dist_world_size, rank=opt.gpu_ranks[device_id])
     gpu_rank = torch.distributed.get_rank()
     if not is_master(opt, device_id):
         logger.disabled = True
@@ -28,7 +29,7 @@ def multi_init(opt, device_id):
     return gpu_rank
 
 
-def all_reduce_and_rescale_tensors(tensors, rescale_denom,buffer_size=10485760):
+def all_reduce_and_rescale_tensors(tensors, rescale_denom, buffer_size=10485760):
     """All-reduce and rescale tensors in chunks of the specified size.
 
     Args:
@@ -44,8 +45,8 @@ def all_reduce_and_rescale_tensors(tensors, rescale_denom,buffer_size=10485760):
         # copy tensors into buffer_t
         offset = 0
         for t in buffer:
-            numel = t.numel()     #返回一个tensor变量内所有元素个数，可以理解为矩阵内元素的个数
-            buffer_t[offset:offset+numel].copy_(t.view(-1))
+            numel = t.numel()  # 返回一个tensor变量内所有元素个数，可以理解为矩阵内元素的个数
+            buffer_t[offset:offset + numel].copy_(t.view(-1))
             offset += numel
 
         # all-reduce and rescale
@@ -56,7 +57,7 @@ def all_reduce_and_rescale_tensors(tensors, rescale_denom,buffer_size=10485760):
         offset = 0
         for t in buffer:
             numel = t.numel()
-            t.view(-1).copy_(buffer_t[offset:offset+numel])
+            t.view(-1).copy_(buffer_t[offset:offset + numel])
             offset += numel
 
     filled = 0
@@ -98,10 +99,10 @@ def all_gather_list(data, max_size=4096):
     if enc_size + 2 > max_size:
         raise ValueError(
             'encoded data exceeds max_size: {}'.format(enc_size + 2))
-    assert max_size < 255*256
+    assert max_size < 255 * 256
     in_buffer[0] = enc_size // 255  # this encoding works for max_size < 65k
     in_buffer[1] = enc_size % 255
-    in_buffer[2:enc_size+2] = torch.ByteTensor(list(enc))
+    in_buffer[2:enc_size + 2] = torch.ByteTensor(list(enc))
 
     torch.distributed.all_gather(out_buffers, in_buffer.cuda())
 
@@ -110,7 +111,7 @@ def all_gather_list(data, max_size=4096):
         out_buffer = out_buffers[i]
         size = (255 * out_buffer[0].item()) + out_buffer[1].item()
 
-        bytes_list = bytes(out_buffer[2:size+2].tolist())
+        bytes_list = bytes(out_buffer[2:size + 2].tolist())
         result = pickle.loads(bytes_list)
         results.append(result)
     return results

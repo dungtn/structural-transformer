@@ -1,19 +1,16 @@
 #!/bin/bash
 
-model_file='/home/jzhu/opennmt-structure/workspace/model/_step_300000.pt'
-output_dir='./workspace/translate-result'
+data_dir=/mnt/nfs/scratch1/dthai/amred-qa/data/$1/data
+model_fn=/mnt/nfs/scratch1/dthai/amred-qa/models/$1/features8_step_300000.pt
+output_dir=/mnt/nfs/scratch1/dthai/amred-qa/results/$1
+mkdir -p ${output_dir}
 
-
-
-
-CUDA_VISIBLE_DEVICES=2  python3  ./translate.py  -model      $model_file \
-                                                 -src        /home/jzhu/corpus/LDC2015E86/dev_concept_no_EOS_bpe \
-                                                 -structure  /home/jzhu/corpus/LDC2015E86/all_path/dev_edge_all  \
-                                                 -output     $output_dir/test_target.tran \
-                                                 -beam_size 5 \
-                                                 -share_vocab  \
-                                                 -gpu 0
-
-
+python translate.py -model ${model_fn} \
+ -src ${data_dir}/$2_concept_bpe \
+ -structure  ${data_dir}/$2_all_path_bpe \
+ -output     ${output_dir}/$2_target_features8.translate \
+ -beam_size 5 \
+ -share_vocab \
+ -gpu 0
 
 

@@ -1,15 +1,14 @@
 #!/bin/bash
 
-train_test_data_dir='/home/jzhu/LDC2015E86'
-data_dir='./workspace/data'
-if [ ! -d "$data_dir" ]; then mkdir -p "$data_dir"; fi
-data_prefix="$data_dir/gq"
+data_dir=/mnt/nfs/scratch1/dthai/amred-qa/data/$1/data
+mkdir -p ${data_dir}/baseline-data
+data_prefix=${data_dir}/baseline-data/gq
 
-python3 ./preprocess.py -train_src $train_test_data_dir/train_source_bpe \
-                       -train_tgt $train_test_data_dir/train_target_token_bpe \
-                       -valid_src $train_test_data_dir/dev_source_bpe  \
-                       -valid_tgt $train_test_data_dir/dev_target_token_bpe \
-                       -save_data $data_prefix \
+python preprocess.py -train_src ${data_dir}/training_source_bpe \
+                       -train_tgt ${data_dir}/training_target_bpe \
+                       -valid_src ${data_dir}/dev_source_bpe  \
+                       -valid_tgt ${data_dir}/dev_target_bpe \
+                       -save_data ${data_prefix} \
                        -src_vocab_size 30000  \
                        -tgt_vocab_size 30000 \
                        -src_seq_length 10000 \

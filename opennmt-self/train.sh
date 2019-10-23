@@ -1,12 +1,11 @@
 #!/bin/bash
 
-data_prefix='./workspace/data/self_no_indirect_data/gq'
-model_dir='./workspace/self_no_indirect_model2015/'
-if [ ! -d "$model_dir" ]; then mkdir -p "$model_dir"; fi
+data_prefix=/mnt/nfs/scratch1/dthai/amred-qa/data/$1/data/relationmat-data/gq
+model_dir=/mnt/nfs/scratch1/dthai/amred-qa/models/$1/self_attention
 
-CUDA_VISIBLE_DEVICES=0 nohup python3 train.py \
-                        -data $data_prefix \
-                        -save_model $model_dir \
+python train.py \
+                        -data ${data_prefix} \
+                        -save_model ${model_dir} \
                         -world_size 1 \
                         -gpu_ranks 0  \
                         -save_checkpoint_steps 5000 \
@@ -25,7 +24,7 @@ CUDA_VISIBLE_DEVICES=0 nohup python3 train.py \
                         -decay_method noam \
                         -learning_rate 0.5 \
                         -max_grad_norm 0.0 \
-                        -batch_size 4096 \
+                        -batch_size 2048 \
                         -batch_type tokens \
                         -normalization tokens \
                         -dropout 0.3 \
@@ -34,7 +33,5 @@ CUDA_VISIBLE_DEVICES=0 nohup python3 train.py \
                         -param_init 0.0 \
                         -param_init_glorot \
                         -valid_batch_size 4 \
-                        -accum_count 1  > no_indirect_self_2015 2>&1 & 
-
-
+                        -accum_count 1   
 

@@ -2,9 +2,9 @@
 Implementation of "Attention is All You Need"
 """
 
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
 
 import onmt
 from onmt.sublayer import PositionwiseFeedForward
@@ -126,7 +126,7 @@ class TransformerDecoder(nn.Module):
 
         # Run the forward pass of the TransformerDecoder.
         emb = self.embeddings(tgt, step=step)
-        
+
         assert emb.dim() == 3  # len x batch x embedding_dim
 
         output = emb.transpose(0, 1).contiguous()

@@ -37,11 +37,11 @@ def tile(x, count, dim=0):
     out_size[0] *= count
     batch = x.size(0)
     x = x.view(batch, -1) \
-         .transpose(0, 1) \
-         .repeat(count, 1) \
-         .transpose(0, 1) \
-         .contiguous() \
-         .view(*out_size)
+        .transpose(0, 1) \
+        .repeat(count, 1) \
+        .transpose(0, 1) \
+        .contiguous() \
+        .view(*out_size)
     if dim != 0:
         x = x.permute(perm).contiguous()
     return x
@@ -52,4 +52,4 @@ def use_gpu(opt):
     Creates a boolean if gpu used
     """
     return (hasattr(opt, 'gpu_ranks') and len(opt.gpu_ranks) > 0) or \
-        (hasattr(opt, 'gpu') and opt.gpu > -1)
+           (hasattr(opt, 'gpu') and opt.gpu > -1)

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-data_prefix='./workspace/data/gq'
-model_dir='./workspace/model2/'
-if [ ! -d "$model_dir" ]; then mkdir -p "$model_dir"; fi
-
-CUDA_VISIBLE_DEVICES=1  python3 train.py \
-                        -data $data_prefix \
-                        -save_model $model_dir \
+data_dir=/mnt/nfs/scratch1/dthai/amred-qa/data/$1/data
+data_prefix=${data_dir}/baseline-data/gq
+model_dir=/mnt/nfs/scratch1/dthai/amred-qa/models/$1/baseline
+mkdir -p ${model_dir}
+python train.py \
+                        -data ${data_prefix} \
+                        -save_model ${model_dir} \
                         -world_size 1 \
                         -gpu_ranks 0 \
                         -save_checkpoint_steps 5000 \

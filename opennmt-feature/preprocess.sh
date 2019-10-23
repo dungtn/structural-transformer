@@ -1,23 +1,21 @@
 #!/bin/bash
 
-train_test_data_dir='/home/jzhu/corpus/LDC2015E86/all_path'
+data_dir=/mnt/nfs/scratch1/dthai/amred-qa/data/$1/data
+mkdir -p ${data_dir}/features-data
+data_prefix=${data_dir}/features-data/gq
 
-data_dir='./workspace/data/all_path_data'
-if [ ! -d "$data_dir" ]; then mkdir -p "$data_dir"; fi
-data_prefix="$data_dir/gq"
-
-python3 ./preprocess.py -train_src /home/jzhu/corpus/LDC2015E86/train_concept_no_EOS_bpe \
-                        -train_tgt /home/jzhu/corpus/LDC2015E86/train_target_token_bpe \
-                        -train_structure  /home/jzhu/corpus/LDC2015E86/all_path/train_edge_all  \
-                        -valid_src /home/jzhu/corpus/LDC2015E86/dev_concept_no_EOS_bpe  \
-                        -valid_tgt /home/jzhu/corpus/LDC2015E86/dev_target_token_bpe \
-                        -valid_structure /home/jzhu/corpus/LDC2015E86/all_path/dev_edge_all   \
+python preprocess.py -train_src $data_dir/training_concept_bpe \
+                        -train_tgt $data_dir/training_target_bpe \
+                        -train_structure  $data_dir/training_all_8_path_bpe  \
+                        -valid_src $data_dir/dev_concept_bpe  \
+                        -valid_tgt $data_dir/dev_target_bpe \
+                        -valid_structure $data_dir/dev_all_8_path_bpe   \
                         -save_data $data_prefix \
-                        -src_vocab_size 10000  \
-                        -tgt_vocab_size 10000 \
-                        -structure_vocab_size 5000 \
-                        -src_seq_length 10000 \
-                        -tgt_seq_length 10000 \
+                        -src_vocab_size 20000  \
+                        -tgt_vocab_size 20000 \
+                        -structure_vocab_size 20000 \
+                        -src_seq_length 20000 \
+                        -tgt_seq_length 20000 \
                         -share_vocab
 
 
